@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <data-table :rows="contacts" :rowsPerPage="3"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import DataTable from "./components/DataTable.vue";
+import dataSource from "./assets/data.json";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    DataTable
+  },
+  computed: {
+    contacts() {
+      return dataSource.contacts.map(item => {
+        return item;
+      });
+    }
   }
 };
 </script>
