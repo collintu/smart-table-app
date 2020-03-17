@@ -1,61 +1,68 @@
 <template>
-    <div>
-        <v-table :data="rows" :currentPage.sync="currentPage" :pageSize="rowsPerPage" @totalPagesChanged="totalPages = $event">
-            <thead slot="head">
-                <v-th v-for="col in columns" :key="col" :sortKey="col"> 
-                    {{col}}
-                </v-th>
-            </thead>
-            <tbody slot="body" slot-scope="{displayData}">
-                <tr v-for="row in displayData" :key="row">
-                    <td v-for="col in columns" :key="col">{{row[col]}}</td>
-                </tr>
-            </tbody>
-        </v-table>
-       
-        <smart-pagination :currentPage.sync="currentPage" :totalPages="totalPages" />    
-    </div>
+  <div>
+    <v-table
+      :data="rows"
+      :currentPage.sync="currentPage"
+      :pageSize="rowsPerPage"
+      @totalPagesChanged="totalPages = $event"
+    >
+      <thead slot="head">
+        <v-th v-for="col in columns" :key="col" :sortKey="col">
+          {{ col }}
+        </v-th>
+      </thead>
+      <tbody slot="body" slot-scope="{ displayData }">
+        <tr v-for="row in displayData" :key="row">
+          <td v-for="col in columns" :key="col">{{ row[col] }}</td>
+        </tr>
+      </tbody>
+    </v-table>
+
+    <smart-pagination
+      :currentPage.sync="currentPage"
+      :totalPages="totalPages"
+    />
+  </div>
 </template>
 
 <script>
- 
 export default {
-    name: "DataTable",
-    data() {
-        return {
-            currentPage: 1
-        };
+  name: "DataTable",
+  data() {
+    return {
+      currentPage: 1
+    };
+  },
+  props: {
+    rows: {
+      type: Array,
+      required: true
     },
-    props: {
-        rows: {
-            type: Array,
-            required: true
-        },
-        rowsPerPage: {
-            type: Number,
-            default: 3
-        }
-    },
-    computed: {
-        columns() {
-            if(this.rows.length == 0) {
-                return [];
-            }
-
-            return Object.keys(this.rows[0]);
-        }
-    },
-    methods: {
-        sortTable(col) {
-            this.rows.sort((a, b) => {
-                return a[col] > b[col];
-            })
-        },
-        totalPages() {
-            return Math.ceil(this.rows.length / this.rowsPerPage);
-        }
+    rowsPerPage: {
+      type: Number,
+      default: 3
     }
-}
+  },
+  computed: {
+    columns() {
+      if (this.rows.length == 0) {
+        return [];
+      }
+
+      return Object.keys(this.rows[0]);
+    }
+  },
+  methods: {
+    sortTable(col) {
+      this.rows.sort((a, b) => {
+        return a[col] > b[col];
+      });
+    },
+    totalPages() {
+      return Math.ceil(this.rows.length / this.rowsPerPage);
+    }
+  }
+};
 </script>
 
 <style>
@@ -98,12 +105,11 @@ table tbody tr:nth-child(2n) td {
 .page-item {
   display: inline;
   padding: 10px 10px 10px;
-  border-left: 1px solid #d9dbe9;
-  border-top: 1px solid #d9dbe9;
-  border-bottom: 1px solid #d9dbe9;
-  
+  border: 1px solid #d9dbe9;
   text-align: center;
-  
+}
+.page-item + .page-item {
+  border-left: 0px;
 }
 .page-item.active {
   background: #6b7ce6;
