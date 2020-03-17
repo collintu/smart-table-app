@@ -100,7 +100,6 @@ table tbody tr:nth-child(2n) td {
   font-family: "Open Sans", sans-serif;
   text-align: left;
   width: 100%;
-  border-right: 1px solid #d9dbe9;
 }
 .page-item {
   display: inline;
