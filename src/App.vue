@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <data-table :rows="contacts" :rowsPerPage="3"/>
+    <data-table :rows="contacts" :rowsPerPage="3" />
   </div>
 </template>
 

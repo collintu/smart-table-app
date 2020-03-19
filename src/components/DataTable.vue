@@ -1,27 +1,40 @@
 <template>
-  <div>
-    <v-table
-      :data="rows"
-      :currentPage.sync="currentPage"
-      :pageSize="rowsPerPage"
-      @totalPagesChanged="totalPages = $event"
-    >
-      <thead slot="head">
-        <v-th v-for="col in columns" :key="col" :sortKey="col">
-          {{ col }}
-        </v-th>
-      </thead>
-      <tbody slot="body" slot-scope="{ displayData }">
-        <tr v-for="row in displayData" :key="row">
-          <td v-for="col in columns" :key="col">{{ row[col] }}</td>
-        </tr>
-      </tbody>
-    </v-table>
+  <div class="container">
+    <div class="filter">
+      <label>Filter by Name:</label>
+      <input class="form-control" v-model="filters.name.value" />
+    </div>
 
-    <smart-pagination
-      :currentPage.sync="currentPage"
-      :totalPages="totalPages"
-    />
+    <div class="dataTable">
+      <v-table
+        :data="rows"
+        :filters="filters"
+        :currentPage.sync="currentPage"
+        :pageSize="rowsPerPage"
+        @totalPagesChanged="totalPages = $event"
+        selectionMode="multiple"
+        selectedClass="table-info"
+        @selectionChanged="selectedRows = $event"
+      >
+        <thead slot="head">
+          <v-th v-for="col in columns" :key="col" :sortKey="col">
+            {{ col }}
+          </v-th>
+        </thead>
+        <tbody slot="body" slot-scope="{ displayData }">
+          <v-tr v-for="row in displayData" :key="row" :row="row">
+            <td v-for="col in columns" :key="col">{{ row[col] }}</td>
+          </v-tr>
+        </tbody>
+      </v-table>
+    </div>
+
+    <div class="pagination">
+      <smart-pagination
+        :currentPage.sync="currentPage"
+        :totalPages="totalPages"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,7 +43,11 @@ export default {
   name: "DataTable",
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
+      selectedRows: [],
+      filters: {
+        name: { value: "", keys: ["name"] }
+      }
     };
   },
   props: {
@@ -66,13 +83,25 @@ export default {
 </script>
 
 <style>
+div {
+  text-align: left;
+}
+
+.filter {
+  padding: 5px 5px 0px 12px;
+}
+
+.pagination {
+  padding: 0px;
+}
 table {
   font-family: "Open Sans", sans-serif;
-  width: 80%;
+  width: 65%;
   border-collapse: collapse;
   border: 3px solid #44475c;
   margin: 10px 10px 0 10px;
 }
+
 table th {
   text-transform: uppercase;
   text-align: center;
@@ -92,14 +121,18 @@ table td {
 table td:last-child {
   border-right: none;
 }
-table tbody tr:nth-child(2n) td {
-  background: #d4d8f9;
+.table-info {
+  background: #c2c5d8;
 }
-
+table tr:hover {
+  background: #aabd7d;
+}
 .smart-pagination {
   font-family: "Open Sans", sans-serif;
   text-align: left;
   width: 100%;
+  position: relative;
+  left: 10px;
 }
 .page-item {
   display: inline;
