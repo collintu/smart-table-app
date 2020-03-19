@@ -17,13 +17,13 @@
         @selectionChanged="selectedRows = $event"
       >
         <thead slot="head">
-          <v-th v-for="col in columns" :key="col" :sortKey="col">
+          <v-th v-for="(col, idx) in columns" :key="idx" :sortKey="col">
             {{ col }}
           </v-th>
         </thead>
         <tbody slot="body" slot-scope="{ displayData }">
-          <v-tr v-for="row in displayData" :key="row" :row="row">
-            <td v-for="col in columns" :key="col">{{ row[col] }}</td>
+          <v-tr v-for="(row, idx) in displayData" :key="idx" :row="row">
+            <td v-for="(col, idx) in columns" :key="idx">{{ row[col] }}</td>
           </v-tr>
         </tbody>
       </v-table>
@@ -67,6 +67,12 @@ export default {
       }
 
       return Object.keys(this.rows[0]);
+    },
+    totalPages: {
+      get() {
+        return Math.ceil(this.rows.length / this.rowsPerPage);
+      },
+      set() {}
     }
   },
   methods: {
@@ -74,9 +80,6 @@ export default {
       this.rows.sort((a, b) => {
         return a[col] > b[col];
       });
-    },
-    totalPages() {
-      return Math.ceil(this.rows.length / this.rowsPerPage);
     }
   }
 };
