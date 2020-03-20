@@ -18,7 +18,10 @@
           </nb-dropdown-item>
         </nb-dropdown-menu>
       </nb-dropdown>
-      <input class="form-control" v-model="filters.name.value" />
+      <nb-input
+        v-model="filters.name.value"
+        placeholder="Please enter value to filter"
+      ></nb-input>
       <label class="filterName">by {{ filterName }}</label>
     </div>
 
@@ -116,7 +119,7 @@ div {
 }
 .filter,
 .filterName {
-  padding: 5px 5px 0px 12px;
+  padding: 5px 5px 0px 5px;
 }
 .pagination {
   padding: 0px;
