@@ -1,8 +1,25 @@
 <template>
   <div class="container">
     <div class="filter">
-      <label>Filter by Name:</label>
+      <nb-dropdown
+        text="Filter"
+        simple-button
+        single-button
+        v-on:command="onFilterChange"
+        trigger="click"
+      >
+        <nb-dropdown-menu slot="dropdown">
+          <nb-dropdown-item
+            :command="col"
+            v-for="(col, idx) in columns"
+            :key="idx"
+          >
+            {{ col }}
+          </nb-dropdown-item>
+        </nb-dropdown-menu>
+      </nb-dropdown>
       <input class="form-control" v-model="filters.name.value" />
+      <label class="filterName">by {{ filterName }}</label>
     </div>
 
     <div class="dataTable">
@@ -45,8 +62,12 @@ export default {
     return {
       currentPage: 1,
       selectedRows: [],
+      filterName: "",
       filters: {
-        name: { value: "", keys: ["name"] }
+        name: {
+          value: "",
+          keys: ["id", "name", "phone", "profession", "address"]
+        }
       }
     };
   },
@@ -80,6 +101,10 @@ export default {
       this.rows.sort((a, b) => {
         return a[col] > b[col];
       });
+    },
+    onFilterChange(command) {
+      debugger;
+      this.filterName = command;
     }
   }
 };
@@ -89,11 +114,10 @@ export default {
 div {
   text-align: left;
 }
-
-.filter {
+.filter,
+.filterName {
   padding: 5px 5px 0px 12px;
 }
-
 .pagination {
   padding: 0px;
 }
